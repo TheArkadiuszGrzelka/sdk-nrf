@@ -985,6 +985,21 @@ int nrf_cloud_tenant_id_get(char *id_buf, size_t id_len);
 int nrf_cloud_jwt_generate(uint32_t time_valid_s, char * const jwt_buf, size_t jwt_buf_sz);
 
 /**
+ * @brief Application-provided JWT generation.
+ *        Must be implemented by the application when
+ *        @kconfig{CONFIG_NRF_CLOUD_JWT_SOURCE_APP} is enabled.
+ *        Called by @ref nrf_cloud_jwt_generate.
+ *
+ * @param[in,out] jwt_buf Buffer to hold the null-terminated JWT.
+ * @param[in] jwt_buf_sz  Size of the buffer.
+ *
+ * @retval 0      JWT generated successfully.
+ * @retval -ETIME Signer does not have valid date/time, JWT not generated.
+ * @return A negative value indicates an error.
+ */
+int nrf_cloud_jwt_app_generate(char *jwt_buf, size_t jwt_buf_sz);
+
+/**
  * @brief Process/validate a pending FOTA update job. Typically the job
  *        information is read from non-volatile storage on startup. This function
  *        is intended to be used by custom FOTA implementations.

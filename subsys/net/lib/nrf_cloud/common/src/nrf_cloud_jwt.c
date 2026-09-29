@@ -206,6 +206,9 @@ int nrf_cloud_jwt_generate(uint32_t time_valid_s, char *const jwt_buf, size_t jw
 		return -EINVAL;
 	}
 
+#if defined(CONFIG_NRF_CLOUD_JWT_SOURCE_APP)
+	return nrf_cloud_jwt_app_generate(jwt_buf, jwt_buf_sz);
+#else
 	int err;
 	const char *id_ptr;
 	uint32_t exp_delta_s = time_valid_s;
@@ -268,4 +271,5 @@ int nrf_cloud_jwt_generate(uint32_t time_valid_s, char *const jwt_buf, size_t jw
 #endif
 
 	return err;
+#endif
 }
